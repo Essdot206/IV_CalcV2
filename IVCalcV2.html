@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>IV Cost Calculator</title>
+	<style>
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 50px;
+		}
+
+		input, label {
+			margin: 10px;
+			font-size: 16px;
+			padding: 10px;
+		}
+
+		button {
+			margin-top: 20px;
+			font-size: 20px;
+			padding: 10px 20px;
+		}
+
+		#total-cost {
+			margin-top: 20px;
+			font-size: 24px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<form>
+		<label for="product-x-amount">IV Bags Count:</label>
+		<input type="number" id="product-x-amount" required>
+
+		<label for="product-x-cost">IV Bags Cost:</label>
+		<input type="text" id="product-x-cost" pattern="^\$?\d{1,3}(,\d{3})*(\.\d{2})?$" placeholder="$0.00" required>
+
+		<label for="product-y-amount">Vial Count:</label>
+		<input type="number" id="product-y-amount" required>
+
+		<label for="product-y-cost">Vial Cost:</label>
+		<input type="text" id="product-y-cost" pattern="^\$?\d{1,3}(,\d{3})*(\.\d{2})?$" placeholder="$0.00" required>
+
+		<label for="days">How Many Days:</label>
+		<input type="number" id="days" required>
+
+		<label for="cost-per-day">Cost Per Day:</label>
+		<input type="text" id="cost-per-day" pattern="^\$?\d{1,3}(,\d{3})*(\.\d{2})?$" placeholder="$0.00" required>
+
+		<button type="button" onclick="calculateTotalCost()">Calculate</button>
+
+		<div id="total-cost"></div>
+	</form>
+
+	<script>
+		function calculateTotalCost() {
+			// Get input values
+			var productXAmount = parseFloat(document.getElementById("product-x-amount").value);
+			var productXCost = parseFloat(document.getElementById("product-x-cost").value.replace(/\$|,/g, ''));
+			var productYAmount = parseFloat(document.getElementById("product-y-amount").value);
+			var productYCost = parseFloat(document.getElementById("product-y-cost").value.replace(/\$|,/g, ''));
+			var days = parseInt(document.getElementById("days").value);
+			var costPerDay = parseFloat(document.getElementById("cost-per-day").value.replace(/\$|,/g, ''));
+
+			// Calculate total cost with markup and additional cost
+			var totalCost = (productXAmount * productXCost) + (productYAmount * productYCost);
+			totalCost *= 1.85; // add 85% markup
+			var additionalCost = days * costPerDay;
+			totalCost += additionalCost;
+
+			// Display total cost
+			document.getElementById("total-cost").innerHTML = "Total Cost: $" + totalCost.toFixed(2);
+		}
+	</script>
+</body>
+</html>
